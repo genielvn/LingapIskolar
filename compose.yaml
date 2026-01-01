@@ -1,0 +1,37 @@
+services:
+  app:
+    build: "."
+    ports:
+      - "8000:8000"
+      - "5173:5173"
+    expose: 
+      - 8000
+      - 5173
+    volumes:
+      - .:/app
+      - "/app/node_modules"
+      - "/app/vendor"
+    depends_on:
+      database:
+        condition: service_healthy
+    command: composer run dev
+
+  database:
+    image: mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    expose: 
+      - 3306
+    environment:
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD}"]
+      timeout: 5s
+      retries: 10
+      interval: 10s
+volumes:
+  db_data:
