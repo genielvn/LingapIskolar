@@ -2,54 +2,42 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return "root";
+Route::get("/", function () {
+    return view("routes.root");
 });
 
-Route::get('/login', function () {
+Route::get("/login", function () {
     return "login";
-});
+})->name("login");
 
-Route::post('/login', function () {
-    // user log
-    return "login";
-});
-
-Route::get('/signup', function () {
+Route::get("/signup", function () {
     return "signup";
-});
+})->name("signup");
 
-Route::get('/dashboard', function () {
-    
+Route::get("/dashboard", function () {
     return "dashboard";
-});
+})->name("dashboard");
 
-Route::get('/ticket', function () {
-    return "tickets";
-});
+Route::get("/ticket", function () {
+    return "ticket";
+})->name("ticket");
 
-Route::get('/ticket/create', function () {
+Route::get("/ticket/create", function () {
     return "tickets creation page";
-});
+})->name("ticket-create");
 
-Route::get('/ticket/assign', function () {
+Route::get("/ticket/assign", function () {
     return "tickets assign page";
-});
+})->name("ticket-assign");
 
-Route::get('/ticket/{id}', function (string $id) {
-    return "ticket#".$id;
-});
+Route::get("/ticket/{id}", function (string $id) {
+    return "ticket#" . $id;
+})->name("ticket-details");
 
-Route::get('/ticket/{id}/review', function (string $id) {
-    return "ticket#".$id."-review";
-});
+Route::get("/ticket/{id}/review", function (string $id) {
+    return "ticket#" . $id . "-review";
+})->name("ticket-detail-review");
 
-Route::get('/ticket/{id}/inquire', function (string $id) {
-    return "ticket#".$id."-message";
-});
-
-Route::get('/charliekirk', function () {
-    return view('routes.charliekirk');
-});
-
-
+Route::get("/ticket/{id}/inquire", function (string $id) {
+    return "ticket#" . $id . "-message";
+})->name("ticket-detail-inquire");
