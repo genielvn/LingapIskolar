@@ -6,9 +6,17 @@
         <title>LingapIskolar</title>
         @vite("resources/css/app.css")
     </head>
-    <body class="min-h-screen min-w-screen flex-row overflow-x-hidden">
+    <body class="flex min-h-screen min-w-screen flex-col overflow-x-hidden">
         <x-header />
-        @section("content")
-        @show
+        <main
+            class="h-full flex-1 p-4"
+            style="
+                background-image: url('{{ asset(auth()->check() ? "/img/auth-bg.png" : "/img/public-bg.png") }}');
+            "
+        >
+            @section("main")
+
+            @show
+        </main>
     </body>
 </html>
