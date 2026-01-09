@@ -11,11 +11,11 @@
             >
                 @csrf
                 <x-text-input
-                    :type="'text'"
-                    :label="'Username / Email'"
-                    :id="'username'"
-                    :icon="'bi-person-circle'"
-                    :value="old('username')"
+                    :type="'email'"
+                    :label="'Email'"
+                    :id="'email'"
+                    :icon="'bi-envelope'"
+                    :value="old('email')"
                 />
                 <x-text-input
                     :type="'password'"
