@@ -13,6 +13,7 @@
                 "placeholder" => $label,
                 "type" => $type,
                 "name" => $id,
+                "value" => $value,
             ])
         }}
     />
