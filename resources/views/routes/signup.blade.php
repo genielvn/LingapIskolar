@@ -15,12 +15,13 @@
                     :label="'Name'"
                     :id="'name'"
                     :icon="'bi-person-lines-fill'"
+                    :value="old('name')"
                 />
                 <x-text-input
-                    :type="'text'"
-                    :label="'Username / Email'"
-                    :id="'username'"
-                    :icon="'bi-person-circle'"
+                    :type="'email'"
+                    :label="'Email'"
+                    :id="'email'"
+                    :icon="'bi-envelope'"
                 />
                 <x-text-input
                     :type="'password'"
