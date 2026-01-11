@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 Route::get("/", function () {
     if (Auth()->guest()) {
@@ -47,8 +48,21 @@ Route::middleware("auth")->group(function () {
     })->name("ticket");
 
     Route::get("/ticket/create", function () {
-        return "tickets creation page";
+        return view("routes.create-ticket");
     })->name("ticket-create");
+
+    Route::post("/ticket/create", function (Request $request) {
+        return response()->json(
+            [
+                "status" => 501,
+                "comment" =>
+                    "TODO: Create the ticket and redirect to the ticket itself",
+                "message" => "Not Implemented: Data still received.",
+                "data" => $request->all(),
+            ],
+            501,
+        );
+    });
 
     Route::get("/ticket/assign", function () {
         return "tickets assign page";
