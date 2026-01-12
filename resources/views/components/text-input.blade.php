@@ -1,4 +1,4 @@
-<div class="relative">
+<div class="relative w-full">
     @if ($icon)
         <i
             class="bi {{ $icon }} absolute top-1/2 left-4 -translate-y-1/2 text-4xl text-neutral-800"

@@ -23,7 +23,7 @@ class TicketStatus extends Component
     public function getStyle(): string
     {
         $base =
-            "w-80 items-center justify-center rounded-2xl p-4 text-center font-bold text-white";
+            "w-64 items-center justify-center rounded-2xl p-4 text-center font-bold text-white";
         $colors = match ($this->status) {
             "Open" => "bg-green-600",
             "Assigned" => "bg-green-600",

@@ -30,7 +30,7 @@ class TextInput extends Component
     public function getStyleOfInput(): string
     {
         $base =
-            "w-full rounded-full border-2 border-amber-400 bg-white p-4 outline-none";
+            "w-full flex-1 rounded-full border-2 border-amber-400 bg-white p-4 outline-none";
         if ($this->icon) {
             return $base . " " . "pl-16";
         }
