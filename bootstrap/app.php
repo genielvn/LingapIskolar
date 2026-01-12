@@ -19,5 +19,6 @@ return Application::configure(basePath: dirname(__DIR__))
                 \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
         ]);
     })
+
     ->withExceptions(function (Exceptions $exceptions): void {})
     ->create();
