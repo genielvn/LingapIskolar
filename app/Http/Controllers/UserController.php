@@ -16,7 +16,7 @@ class UserController extends Controller
                 "password" => $request->password,
             ])
         ) {
-            return redirect("/ticket");
+            return redirect("/dashboard");
         }
         return back()
             ->withErrors([
@@ -41,6 +41,6 @@ class UserController extends Controller
 
         Auth::login($newUser);
 
-        return redirect("/ticket");
+        return redirect("/dashboard");
     }
 }
