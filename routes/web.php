@@ -82,11 +82,24 @@ Route::middleware("auth")->group(function () use ($tickets) {
 
         // TODO: Check owned tickets
         return view("routes.user-tickets", ["tickets" => $tickets]);
-    })->name("ticket");
+    })->name("dashboard");
 
     Route::get("/ticket/create", function () {
         return view("routes.create-ticket");
     })->name("ticket-create");
+
+    Route::post("/ticket/create", function (Request $request) {
+        return response()->json(
+            [
+                "status" => 501,
+                "comment" =>
+                    "TODO: Create the ticket and redirect to the ticket itself",
+                "message" => "Not Implemented: Data still received.",
+                "data" => $request->all(),
+            ],
+            501,
+        );
+    });
 
     Route::get("/ticket/{id}", function (string $id) use ($tickets) {
         if (auth()->user()->isAdmin()) {
@@ -120,19 +133,6 @@ Route::middleware("auth")->group(function () use ($tickets) {
                     "TODO: Create the reply, refresh, and show the reply thread",
                 "message" => "Not Implemented: Data still received.",
                 "data" => $data,
-            ],
-            501,
-        );
-    });
-
-    Route::post("/ticket/create", function (Request $request) {
-        return response()->json(
-            [
-                "status" => 501,
-                "comment" =>
-                    "TODO: Create the ticket and redirect to the ticket itself",
-                "message" => "Not Implemented: Data still received.",
-                "data" => $request->all(),
             ],
             501,
         );
