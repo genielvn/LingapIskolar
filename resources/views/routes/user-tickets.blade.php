@@ -1,6 +1,6 @@
 @extends("layouts.main")
 
-@section("side")
+@section("headerside")
     <form
         method="GET"
         class="w-full max-w-[40%]"
@@ -93,93 +93,9 @@
                 </div>
             </form>
         </div>
-        <div
-            class="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm"
-        >
-            <table class="w-full border-collapse text-left">
-                <thead>
-                    <tr
-                        class="bg-zinc-50 text-xs font-bold tracking-wider text-zinc-600 uppercase"
-                    >
-                        <th class="border-b border-zinc-200 px-6 py-4">
-                            Ticket ID
-                        </th>
-                        <th class="border-b border-zinc-200 px-6 py-4">
-                            Subject
-                        </th>
-                        <th class="border-b border-zinc-200 px-6 py-4">
-                            Current Status
-                        </th>
-                        <th
-                            class="border-b border-zinc-200 px-6 py-4 text-right"
-                        >
-                            Actions
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-zinc-100">
-                    @forelse ($tickets as $ticket)
-                        <tr class="group transition-all hover:bg-zinc-50/80">
-                            <td class="px-6 py-5 align-top">
-                                <span
-                                    class="rounded bg-red-50 px-2 py-1 font-mono text-sm font-bold text-red-700"
-                                >
-                                    #{{ $ticket["id"] }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-5">
-                                <div
-                                    class="font-bold text-zinc-900 transition-colors group-hover:text-red-800"
-                                >
-                                    {{ $ticket["subject"] }}
-                                </div>
-                                {{-- Truncated description helps keep the table tidy --}}
-                                @if (isset($ticket["description"]))
-                                    <div
-                                        class="mt-1 max-w-sm truncate text-sm text-zinc-400"
-                                    >
-                                        {{ $ticket["description"] }}
-                                    </div>
-                                @endif
-                            </td>
-                            <td class="px-6 py-5 align-top">
-                                <x-ticket-status :status="$ticket['status']" />
-                            </td>
-                            <td class="px-6 py-5 text-right align-top">
-                                <a
-                                    href="/ticket/{{ $ticket["id"] }}"
-                                    class="inline-flex items-center text-sm font-bold text-red-800 transition hover:text-red-600"
-                                >
-                                    View Thread
-                                    <i class="bi bi-chevron-right ml-1"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4" class="px-6 py-20 text-center">
-                                <div class="flex flex-col items-center">
-                                    <i
-                                        class="bi bi-ticket-perforated text-5xl text-zinc-300"
-                                    ></i>
-                                    <p
-                                        class="mt-4 text-lg font-medium text-zinc-500"
-                                    >
-                                        You haven't created any tickets yet.
-                                    </p>
-                                    <x-button
-                                        :href="route('ticket-create')"
-                                        :variant="'secondary'"
-                                        class="mt-4"
-                                    >
-                                        Create your first ticket
-                                    </x-button>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+        <x-ticket-table
+            :columns="['id', '', 'subject', 'status']"
+            :tickets="$tickets"
+        />
     </div>
 @endsection
