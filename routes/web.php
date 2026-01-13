@@ -74,10 +74,8 @@ Route::middleware("auth")->group(function () use ($tickets) {
             );
         }
         if (auth()->user()->isAgent()) {
-            abort(
-                501,
-                "TODO: Show dashboard page where they resolve their assigned student's tickets.",
-            );
+            // TODO: Only give tickets agents are handled
+            return view("routes.agent-tickets", ["tickets" => $tickets]);
         }
 
         // TODO: Check owned tickets
@@ -122,6 +120,7 @@ Route::middleware("auth")->group(function () use ($tickets) {
     })->name("ticket-details");
 
     Route::post("/ticket/{id}/reply", function (Request $request, string $id) {
+        
         $data = $request->all();
         $data["ticket_id"] = $id;
         $data["user_id"] = auth()->user()->id;
