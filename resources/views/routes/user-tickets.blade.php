@@ -31,7 +31,6 @@
                 </p>
             </div>
             <div class="flex gap-4">
-                <x-button :href="route('ticket-create')">New Ticket</x-button>
                 <x-button
                     :variant="'secondary'"
                     onclick="location.reload()"
@@ -40,6 +39,7 @@
                     <i class="bi bi-arrow-clockwise mr-2"></i>
                     Refresh
                 </x-button>
+                <x-button :href="route('ticket-create')">New Ticket</x-button>
             </div>
         </div>
         <div class="grid grid-cols-1 gap-6 md:grid-cols-4">

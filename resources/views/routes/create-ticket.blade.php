@@ -1,36 +1,76 @@
 @extends("layouts.main")
 
 @section("main")
-    <div class="flex w-full flex-col items-center justify-center gap-4 p-4">
+    <div
+        class="flex min-h-[calc(100vh-80px)] w-full items-center justify-center bg-zinc-50/50 p-6"
+    >
         <div
-            class="flex w-3xl flex-col gap-4 rounded-xl border-2 border-black bg-white p-8"
+            class="w-full max-w-2xl rounded-2xl border border-zinc-200 bg-white p-10 shadow-xl shadow-zinc-200/50"
         >
-            <h1 class="text-4xl font-bold">Submit a Support Ticket</h1>
+            <div class="mb-8 border-b border-zinc-100 pb-6 text-center">
+                <h1
+                    class="text-3xl font-black tracking-tight text-zinc-900 uppercase"
+                >
+                    Submit a Support Ticket
+                </h1>
+                <p class="mt-2 text-zinc-500">
+                    Provide as much detail as possible so our agents can assist
+                    you faster.
+                </p>
+            </div>
+
             <form
                 method="POST"
                 action="/ticket/create"
-                class="flex w-full flex-col gap-4"
+                class="flex w-full flex-col gap-6"
                 enctype="multipart/form-data"
             >
                 @csrf
-                <x-text-input
+
+                <x-text-box-input
                     :type="'text'"
                     :label="'Subject'"
                     :id="'subject'"
-                ></x-text-input>
-                <x-text-box-input
-                    :label="'Description'"
-                    :id="'description'"
-                ></x-text-box-input>
-                <x-select-input :id="'category'" :label="'Category'">
-                    <option disabled selected value="initial">Category</option>
-                    <option value="scholarship">Scholarship</option>
-                    <option value="inquiry">Inquiry</option>
-                </x-select-input>
-                
-                <input type="file" id="upload" name="upload" />
+                    placeholder="Briefly describe your issue"
+                />
 
-                <x-button :type="'submit'">Submit</x-button>
+                <x-select-input :id="'category'" :label="'Category'">
+                    <option disabled @selected(! old("category")) value="">
+                        Select a category
+                    </option>
+                    <option
+                        value="scholarship"
+                        @selected(old("category") == "scholarship")
+                    >
+                        Scholarship
+                    </option>
+                    <option
+                        value="inquiry"
+                        @selected(old("category") == "inquiry")
+                    >
+                        Inquiry
+                    </option>
+                </x-select-input>
+
+                <x-text-box-input
+                    :label="'Detailed Description'"
+                    :id="'description'"
+                    placeholder="Please explain the steps to reproduce the issue..."
+                />
+
+                <x-upload-input :id="'upload'"/>
+
+                <div class="mt-4 flex flex-col gap-3">
+                    <x-button :type="'submit'" class="w-full py-4 text-lg">
+                        Submit Ticket
+                    </x-button>
+                    <a
+                        href="{{ route("dashboard") }}"
+                        class="text-center text-sm font-bold text-zinc-400 transition hover:text-red-800"
+                    >
+                        Cancel and return to dashboard
+                    </a>
+                </div>
             </form>
         </div>
     </div>
