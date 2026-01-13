@@ -10,7 +10,6 @@
             :id="'search'"
             :icon="'bi-search'"
             :value="request('search')"
-            :label="'Search'"
         />
     </form>
 @endsection
