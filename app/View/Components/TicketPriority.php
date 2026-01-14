@@ -23,7 +23,7 @@ class TicketPriority extends Component
     public function getStyle(): string
     {
         $base =
-            "inline-flex items-center justify-center rounded-full px-4 py-1.5 text-xs font-black uppercase tracking-widest border min-w-[120px] shadow-sm";
+            "inline-flex items-center justify-center rounded-full px-4 py-1.5 my-1 text-xs font-black uppercase tracking-widest border min-w-[120px] shadow-sm";
 
         $colors = match (strtolower($this->priority)) {
             "urgent" => "bg-red-600 text-white border-red-700 shadow-red-200",
