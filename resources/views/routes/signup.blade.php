@@ -1,7 +1,7 @@
 @extends("layouts.main")
 
 @section("main")
-    <div class="flex w-full items-center justify-center">
+    <div class="flex h-full w-full items-center justify-center">
         <div class="flex flex-col items-center justify-center gap-4">
             <img src="/img/front-logo.png" class="h-48" />
             <form
