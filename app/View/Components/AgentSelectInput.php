@@ -6,16 +6,13 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class TicketTable extends Component
+class AgentSelectInput extends Component
 {
     /**
      * Create a new component instance.
      */
-    public function __construct(
-        public array $columns,
-        public $tickets,
-        public ?array $agents = [],
-    ) {
+    public function __construct(public array $agents)
+    {
         //
     }
 
@@ -24,6 +21,6 @@ class TicketTable extends Component
      */
     public function render(): View|Closure|string
     {
-        return view("components.ticket-table");
+        return view("components.agent-select-input");
     }
 }

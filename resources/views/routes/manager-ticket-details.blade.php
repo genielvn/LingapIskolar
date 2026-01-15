@@ -101,10 +101,9 @@
                     >
                         @csrf
                         @method("PUT")
-                        <x-select-input :id="'assigned_to'">
-                            <option value="Reimu">Reimu</option>
-                            <option value="Marisa">Marisa</option>
-                        </x-select-input>
+
+                        <x-agent-select-input :agents="$agents" />
+
                         <x-button :type="'submit'">Assign</x-button>
                     </form>
                 </div>

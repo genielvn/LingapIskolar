@@ -11,7 +11,7 @@ class AssignAgentModal extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct(public $ticket)
+    public function __construct(public $ticket, public $agents)
     {
         //
     }

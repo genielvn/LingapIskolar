@@ -44,6 +44,51 @@ $tickets = [
     ],
 ];
 
+$agents = [
+    [
+        "id" => "1",
+        "name" => "Reimu Hakurei",
+        "email" => "reimu@touhou.com",
+        "title" => "Shrine Maiden",
+    ],
+    [
+        "id" => "2",
+        "name" => "Marisa Kirisame",
+        "email" => "marisa@touhou.com",
+        "title" => "Ordinary Magician",
+    ],
+    [
+        "id" => "3",
+        "name" => "Sakuya Izayoi",
+        "email" => "sakuya@touhou.com",
+        "title" => "Chief Maid",
+    ],
+    [
+        "id" => "4",
+        "name" => "Youmu Konpaku",
+        "email" => "youmu@touhou.com",
+        "title" => "Half-Ghost Gardener",
+    ],
+    [
+        "id" => "5",
+        "name" => "Sanae Kochiya",
+        "email" => "sanae@touhou.com",
+        "title" => "Deified Human",
+    ],
+    [
+        "id" => "6",
+        "name" => "Remilia Scarlet",
+        "email" => "remilia@touhou.com",
+        "title" => "Vampire Lord",
+    ],
+    [
+        "id" => "7",
+        "name" => "Fujiwara no Mokou",
+        "email" => "mokou@touhou.com",
+        "title" => "Figure of the Person of Hourai",
+    ],
+];
+
 Route::get("/", function () {
     if (Auth()->guest()) {
         return redirect("login");
@@ -79,8 +124,8 @@ Route::post("/logout", function () {
 });
 
 // TODO: remove $tickets when implementing the ticket controller now
-Route::middleware("auth")->group(function () use ($tickets) {
-    Route::get("/dashboard", function () use ($tickets) {
+Route::middleware("auth")->group(function () use ($agents, $tickets) {
+    Route::get("/dashboard", function () use ($tickets, $agents) {
         if (auth()->user()->isAdmin()) {
             abort(
                 501,
@@ -88,11 +133,16 @@ Route::middleware("auth")->group(function () use ($tickets) {
             );
         }
         if (auth()->user()->isManager()) {
-            return view("routes.manager-ticket-dashboard", ["tickets" => $tickets]);
+            return view("routes.manager-ticket-dashboard", [
+                "tickets" => $tickets,
+                "agents" => $agents,
+            ]);
         }
         if (auth()->user()->isAgent()) {
             // TODO: Only give tickets agents are handled
-            return view("routes.agent-ticket-dashboard", ["tickets" => $tickets]);
+            return view("routes.agent-ticket-dashboard", [
+                "tickets" => $tickets,
+            ]);
         }
 
         // TODO: Check owned tickets
@@ -116,7 +166,7 @@ Route::middleware("auth")->group(function () use ($tickets) {
         );
     });
 
-    Route::get("/ticket/{id}", function (string $id) use ($tickets) {
+    Route::get("/ticket/{id}", function (string $id) use ($tickets, $agents) {
         // TODO: Check if user owned the ticket or ticket exists. Do this in controller.
         $indexed_records = array_column($tickets, null, "id");
 
@@ -129,7 +179,9 @@ Route::middleware("auth")->group(function () use ($tickets) {
         }
         if (auth()->user()->isManager()) {
             return view("routes.manager-ticket-details", [
+                "agents" => $agents,
                 "ticket" => $indexed_records[$id],
+                
             ]);
         }
         if (auth()->user()->isAgent()) {

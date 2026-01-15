@@ -63,7 +63,7 @@
                 <div
                     class="flex flex-1 flex-col items-center gap-4 md:flex-row"
                 >
-                    <div class="block md:hidden w-full">
+                    <div class="block w-full md:hidden">
                         <x-text-input
                             :id="'search'"
                             :icon="'bi-search'"
@@ -108,6 +108,7 @@
         <x-ticket-table
             :columns="['id', 'requested_by', 'subject', 'assigned_to', 'status', 'priority']"
             :tickets="$tickets"
+            :agents="$agents"
         ></x-ticket-table>
     </div>
 @endsection

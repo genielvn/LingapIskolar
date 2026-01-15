@@ -107,7 +107,10 @@
                         </div>
 
                         @if (Auth()->user()->isManager())
-                            <x-assign-agent-modal :ticket="$ticket" />
+                            <x-assign-agent-modal
+                                :ticket="$ticket"
+                                :agents="$agents"
+                            />
                         @endif
                     </td>
                 </tr>

@@ -14,15 +14,21 @@
         ></script>
         @vite("resources/css/app.css")
     </head>
-    <body class="flex min-h-screen min-w-screen flex-col overflow-x-hidden" x-data="{ sidebarOpen: false }">
+    <body
+        class="flex min-h-screen min-w-screen flex-col overflow-x-hidden"
+        x-data="{ sidebarOpen: false }"
+    >
         <header
             class="sticky top-0 z-50 flex h-20 items-center justify-between border-b border-zinc-100 bg-white px-10 shadow-sm"
         >
             <div class="flex items-center gap-4">
-                <i
-                    @click="sidebarOpen = !sidebarOpen"
-                    class="bi bi-list cursor-pointer text-4xl md:hidden"
-                ></i>
+                @auth
+                    <i
+                        @click="sidebarOpen = !sidebarOpen"
+                        class="bi bi-list cursor-pointer text-4xl md:hidden"
+                    ></i>
+                @endauth
+
                 <a
                     href="{{ route("root") }}"
                     class="transition-opacity hover:opacity-90"
@@ -58,7 +64,6 @@
             style="
                 background-image: url('{{ asset(auth()->check() ? "/img/auth-bg.png" : "/img/public-bg.png") }}');
             "
-            
         >
             @auth
                 <div
