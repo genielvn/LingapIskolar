@@ -127,10 +127,10 @@ Route::post("/logout", function () {
 Route::middleware("auth")->group(function () use ($agents, $tickets) {
     Route::get("/dashboard", function () use ($tickets, $agents) {
         if (auth()->user()->isAdmin()) {
-            abort(
-                501,
-                "TODO: Show dashboard page where admin can create accounts with manager or agent roles",
-            );
+            return view("routes.admin-dashboard", [
+                "tickets" => $tickets,
+                "agents" => $agents,
+            ]);
         }
         if (auth()->user()->isManager()) {
             return view("routes.manager-ticket-dashboard", [
@@ -181,7 +181,6 @@ Route::middleware("auth")->group(function () use ($agents, $tickets) {
             return view("routes.manager-ticket-details", [
                 "agents" => $agents,
                 "ticket" => $indexed_records[$id],
-                
             ]);
         }
         if (auth()->user()->isAgent()) {
