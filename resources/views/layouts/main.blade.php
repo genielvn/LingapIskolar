@@ -84,6 +84,17 @@
             @endauth
 
             <div class="flex-1 overflow-y-scroll bg-zinc-50/50">
+                @auth
+                    @if ($errors->any())
+                        <div class="px-8 py-4">
+                            <x-alert
+                                :title="'Something went wrong!'"
+                                :type="'danger'"
+                            ></x-alert>
+                        </div>
+                    @endif
+                @endauth
+
                 @section("main")
 
                 @show
