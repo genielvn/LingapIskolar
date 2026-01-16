@@ -114,15 +114,6 @@ Route::get("/signup", function () {
 
 Route::post("/signup", [UserController::class, "sign"]);
 
-Route::get("/logout", function () {
-    return view("routes.logout");
-})->name("logout");
-
-Route::post("/logout", function () {
-    Auth()->logout();
-    return redirect("/");
-});
-
 // TODO: remove $tickets when implementing the ticket controller now
 Route::middleware("auth")->group(function () use ($agents, $tickets) {
     Route::get("/dashboard", function () use ($tickets, $agents) {
@@ -317,6 +308,7 @@ Route::middleware("auth")->group(function () use ($agents, $tickets) {
             501,
         );
     });
+
     Route::put("/agent/revoke", function (Request $request) {
         if (!auth()->user()->isAdmin()) {
             abort(404);
