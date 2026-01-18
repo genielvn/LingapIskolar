@@ -35,7 +35,7 @@
                     :value="request('category')"
                 >
                     <x-option-input
-                        :options="['All', 'Open', 'Scholarship Inquiry', 'Financial Assistance', 'Documents Submission', 'Application Status', 'Technical Support', 'General Inquiry']"
+                        :options="['All', 'Scholarship Inquiry', 'Financial Assistance', 'Documents Submission', 'Application Status', 'Technical Support', 'General Inquiry']"
                         select-name="category"
                     />
                 </x-select-input>

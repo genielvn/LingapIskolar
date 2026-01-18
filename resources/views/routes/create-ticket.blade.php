@@ -35,22 +35,15 @@
                     placeholder="Briefly describe your issue"
                 />
 
-                <x-select-input :id="'category'" :label="'Category'">
-                    <option disabled @selected(! old("category")) value="">
-                        Select a category
-                    </option>
-                    <option
-                        value="scholarship"
-                        @selected(old("category") == "scholarship")
-                    >
-                        Scholarship
-                    </option>
-                    <option
-                        value="inquiry"
-                        @selected(old("category") == "inquiry")
-                    >
-                        Inquiry
-                    </option>
+                <x-select-input
+                    :id="'category'"
+                    :label="'Category'"
+                    :value="request('category')"
+                >
+                    <x-option-input
+                        :options="['Scholarship Inquiry', 'Financial Assistance', 'Documents Submission', 'Application Status', 'Technical Support', 'General Inquiry']"
+                        select-name="category"
+                    />
                 </x-select-input>
 
                 <x-text-box-input

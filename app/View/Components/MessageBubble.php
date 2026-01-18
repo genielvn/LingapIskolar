@@ -15,6 +15,7 @@ class MessageBubble extends Component
         public string $name,
         public string $date,
         public string $content,
+        public string $imgLink,
         public bool $me,
     ) {
         //

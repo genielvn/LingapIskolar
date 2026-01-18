@@ -105,6 +105,29 @@ $sample_members = [
     ],
 ];
 
+$chat = [
+    [
+        "id" => "1",
+        "name" => "Reimu Hakurei",
+        "email" => "reimu@touhou.com",
+        "title" => "Shrine Maiden",
+        "img_link" => "/img/emu.jpg",
+        "message" => "Ping?",
+        "date" => "24 Aug 2026",
+        "me" => false,
+    ],
+    [
+        "id" => "2",
+        "name" => "Emu Otori",
+        "email" => "emu@pjsk.com",
+        "title" => "Student",
+        "img_link" => "/img/emu.jpg",
+        "message" => "POOOOONNNNNNNGGGG!!!!",
+        "date" => "24 Aug 2026",
+        "me" => true,
+    ],
+];
+
 Route::get("/", function () {
     if (Auth()->guest()) {
         return redirect("login");
@@ -135,7 +158,11 @@ Route::post("/logout", function () {
 });
 
 // TODO: remove $tickets when implementing the ticket controller now
-Route::middleware("auth")->group(function () use ($sample_members, $tickets) {
+Route::middleware("auth")->group(function () use (
+    $sample_members,
+    $tickets,
+    $chat,
+) {
     Route::get("/dashboard", function () use ($tickets, $sample_members) {
         if (auth()->user()->isAdmin()) {
             return view("routes.admin-dashboard", [
@@ -165,13 +192,17 @@ Route::middleware("auth")->group(function () use ($sample_members, $tickets) {
     })->name("ticket-create");
 
     Route::post("/ticket/create", function (Request $request) {
+        $data = $request->all();
+        $data["has_file"] = $request->hasFile("upload");
+        $data["file_name"] = $request->file("upload")?->getClientOriginalName();
+
         return response()->json(
             [
                 "status" => 501,
                 "comment" =>
                     "TODO: Create the ticket and redirect to the ticket itself",
                 "message" => "Not Implemented: Data still received.",
-                "data" => $request->all(),
+                "data" => $data,
             ],
             501,
         );
@@ -180,6 +211,7 @@ Route::middleware("auth")->group(function () use ($sample_members, $tickets) {
     Route::get("/ticket/{id}", function (string $id) use (
         $tickets,
         $sample_members,
+        $chat,
     ) {
         // TODO: Check if user owned the ticket, user is higher than a standard role, or ticket exists. Do this in controller.
         $indexed_records = array_column($tickets, null, "id");
@@ -195,16 +227,19 @@ Route::middleware("auth")->group(function () use ($sample_members, $tickets) {
             return view("routes.manager-ticket-details", [
                 "agents" => $sample_members,
                 "ticket" => $indexed_records[$id],
+                "chat" => $chat,
             ]);
         }
         if (auth()->user()->isAgent()) {
             return view("routes.agent-ticket-details", [
                 "ticket" => $indexed_records[$id],
+                "chat" => $chat,
             ]);
         }
 
         return view("routes.user-ticket-details", [
             "ticket" => $indexed_records[$id],
+            "chat" => $chat,
         ]);
     })->name("ticket-details");
 
