@@ -14,9 +14,12 @@ $tickets = [
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         "category" => "Scholarship",
         "priority" => "Urgent",
-        "requested_by" => "Sample User",
+        "requested_by" => "Makoto Yuki",
+        "requestor_title" => "Student",
+        "requestor_img_link" => "/img/emu.jpg",
         "assigned_to" => "Reimu Hakurei",
         "assignee_title" => "Shrine Maiden",
+        "assignee_img_link" => "/img/emu.jpg",
     ],
     [
         "id" => "0000-0002",
@@ -26,9 +29,12 @@ $tickets = [
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         "category" => "Scholarship",
         "priority" => "High",
-        "requested_by" => "Sample User",
+        "requested_by" => "Yukari Takeba",
+        "requestor_title" => "Student",
+        "requestor_img_link" => "/img/emu.jpg",
         "assigned_to" => "Marisa Kirisame",
         "assignee_title" => "Human Magician",
+        "assignee_img_link" => "/img/emu.jpg",
     ],
     [
         "id" => "0000-0003",
@@ -38,54 +44,64 @@ $tickets = [
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         "category" => "Scholarship",
         "priority" => "Medium",
-        "requested_by" => "Sample User",
+        "requested_by" => "Junpei Iori",
+        "requestor_title" => "Student",
+        "requestor_img_link" => "/img/emu.jpg",
         "assigned_to" => "Cirno",
         "assignee_title" => "Stupid Fairy",
+        "assignee_img_link" => "/img/emu.jpg",
     ],
 ];
 
-$agents = [
+$sample_members = [
     [
         "id" => "1",
         "name" => "Reimu Hakurei",
         "email" => "reimu@touhou.com",
         "title" => "Shrine Maiden",
+        "img_link" => "/img/emu.jpg",
     ],
     [
         "id" => "2",
         "name" => "Marisa Kirisame",
         "email" => "marisa@touhou.com",
         "title" => "Ordinary Magician",
+        "img_link" => "/img/emu.jpg",
     ],
     [
         "id" => "3",
         "name" => "Sakuya Izayoi",
         "email" => "sakuya@touhou.com",
         "title" => "Chief Maid",
+        "img_link" => "/img/emu.jpg",
     ],
     [
         "id" => "4",
         "name" => "Youmu Konpaku",
         "email" => "youmu@touhou.com",
         "title" => "Half-Ghost Gardener",
+        "img_link" => "/img/emu.jpg",
     ],
     [
         "id" => "5",
         "name" => "Sanae Kochiya",
         "email" => "sanae@touhou.com",
         "title" => "Deified Human",
+        "img_link" => "/img/emu.jpg",
     ],
     [
         "id" => "6",
         "name" => "Remilia Scarlet",
         "email" => "remilia@touhou.com",
         "title" => "Vampire Lord",
+        "img_link" => "/img/emu.jpg",
     ],
     [
         "id" => "7",
         "name" => "Fujiwara no Mokou",
         "email" => "mokou@touhou.com",
         "title" => "Figure of the Person of Hourai",
+        "img_link" => "/img/emu.jpg",
     ],
 ];
 
@@ -119,18 +135,18 @@ Route::post("/logout", function () {
 });
 
 // TODO: remove $tickets when implementing the ticket controller now
-Route::middleware("auth")->group(function () use ($agents, $tickets) {
-    Route::get("/dashboard", function () use ($tickets, $agents) {
+Route::middleware("auth")->group(function () use ($sample_members, $tickets) {
+    Route::get("/dashboard", function () use ($tickets, $sample_members) {
         if (auth()->user()->isAdmin()) {
             return view("routes.admin-dashboard", [
                 "tickets" => $tickets,
-                "agents" => $agents,
+                "agents" => $sample_members,
             ]);
         }
         if (auth()->user()->isManager()) {
             return view("routes.manager-ticket-dashboard", [
                 "tickets" => $tickets,
-                "agents" => $agents,
+                "agents" => $sample_members,
             ]);
         }
         if (auth()->user()->isAgent()) {
@@ -161,8 +177,11 @@ Route::middleware("auth")->group(function () use ($agents, $tickets) {
         );
     });
 
-    Route::get("/ticket/{id}", function (string $id) use ($tickets, $agents) {
-        // TODO: Check if user owned the ticket or ticket exists. Do this in controller.
+    Route::get("/ticket/{id}", function (string $id) use (
+        $tickets,
+        $sample_members,
+    ) {
+        // TODO: Check if user owned the ticket, user is higher than a standard role, or ticket exists. Do this in controller.
         $indexed_records = array_column($tickets, null, "id");
 
         if (!array_key_exists($id, $indexed_records)) {
@@ -174,7 +193,7 @@ Route::middleware("auth")->group(function () use ($agents, $tickets) {
         }
         if (auth()->user()->isManager()) {
             return view("routes.manager-ticket-details", [
-                "agents" => $agents,
+                "agents" => $sample_members,
                 "ticket" => $indexed_records[$id],
             ]);
         }
@@ -247,11 +266,13 @@ Route::middleware("auth")->group(function () use ($agents, $tickets) {
         );
     });
 
-    Route::get("/manager", function (Request $request) use ($agents) {
+    Route::get("/manager", function (Request $request) use ($sample_members) {
         if (!auth()->user()->isAdmin()) {
             abort(404);
         }
-        return view("routes.admin-manager-list", ["agents" => $agents]);
+        return view("routes.admin-manager-list", [
+            "managers" => $sample_members,
+        ]);
     })->name("manager-list");
 
     Route::put("/manager/add", function (Request $request) {
@@ -289,11 +310,11 @@ Route::middleware("auth")->group(function () use ($agents, $tickets) {
         );
     });
 
-    Route::get("/agent", function (Request $request) use ($agents) {
+    Route::get("/agent", function (Request $request) use ($sample_members) {
         if (!auth()->user()->isAdmin()) {
             abort(404);
         }
-        return view("routes.admin-agent-list", ["agents" => $agents]);
+        return view("routes.admin-agent-list", ["agents" => $sample_members]);
     })->name("agent-list");
 
     Route::put("/agent/add", function (Request $request) {

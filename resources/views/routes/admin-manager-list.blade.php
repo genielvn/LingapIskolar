@@ -76,8 +76,8 @@
             <div
                 class="flex flex-row flex-wrap items-center justify-evenly gap-2"
             >
-                @foreach ($agents as $agent)
-                    <x-admin-member-list-card :member="$agent" />
+                @foreach ($managers as $member)
+                    <x-admin-member-list-card :member="$member" />
                 @endforeach
             </div>
         </div>

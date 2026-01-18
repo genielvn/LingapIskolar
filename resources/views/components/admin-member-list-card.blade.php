@@ -4,7 +4,7 @@
         @click="show = true"
     >
         <img
-            src="/img/emu.jpg"
+            src="{{ $member["img_link"] }}"
             class="h-24 w-24 shrink-0 rounded-full border-4 border-white shadow-lg ring-1 ring-zinc-200"
         />
         <div class="min-w-0">
@@ -56,7 +56,7 @@
                     />
                     <div class="flex items-center gap-4">
                         <img
-                            src="/img/emu.jpg"
+                            src="{{ $member["img_link"] }}"
                             class="h-24 w-24 shrink-0 rounded-full border-4 border-white shadow-lg ring-1 ring-zinc-200"
                         />
                         <div class="min-w-0">
