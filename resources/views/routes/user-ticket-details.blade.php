@@ -26,7 +26,7 @@
         </x-page-header>
         <div class="flex flex-col items-start gap-8 md:flex-row">
             <div class="flex w-full flex-1 flex-col gap-6">
-               {{-- <x-ticket-details :ticket="$ticket" /> --}} 
+              <x-ticket-details :ticket="$ticket" /> 
 
                 <x-chat :chat="$chat" :id="$ticket['id']" />
             </div>
