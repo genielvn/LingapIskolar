@@ -52,10 +52,10 @@ class DashboardController extends Controller
                 'priority' => $ticket->priority?->name ?? 'Unknown',
                 'requested_by' => $ticket->user?->name ?? 'Unknown',
                 'requestor_title' => 'Student',
-                'requestor_img_link' => '/img/emu.jpg',
+                'requestor_img_link' => '/img/user1.png',
                 'assigned_to' => $ticket->currentAssignment?->agent?->name ?? 'Unassigned',
                 'assignee_title' => $ticket->currentAssignment?->agent ? 'Agent' : '',
-                'assignee_img_link' => '/img/emu.jpg',
+                'assignee_img_link' => '/img/agent1.png',
             ];
         })->toArray();
 
@@ -68,7 +68,7 @@ class DashboardController extends Controller
                     'name' => $agent->name,
                     'email' => $agent->email,
                     'title' => 'Agent',
-                    'img_link' => '/img/emu.jpg',
+                    'img_link' => '/img/agent1.png',
                 ];
             })
             ->toArray();
@@ -108,10 +108,10 @@ class DashboardController extends Controller
                 'priority' => $ticket->priority?->name ?? 'Unknown',
                 'requested_by' => $ticket->user?->name ?? 'Unknown',
                 'requestor_title' => 'Student',
-                'requestor_img_link' => '/img/emu.jpg',
+                'requestor_img_link' => '/img/user1.png',
                 'assigned_to' => $ticket->currentAssignment?->agent?->name ?? 'Unassigned',
                 'assignee_title' => $ticket->currentAssignment?->agent ? 'Agent' : '',
-                'assignee_img_link' => '/img/emu.jpg',
+                'assignee_img_link' => '/img/agent1.png',
             ];
         })->toArray();
 
@@ -124,7 +124,7 @@ class DashboardController extends Controller
                     'name' => $agent->name,
                     'email' => $agent->email,
                     'title' => 'Agent',
-                    'img_link' => '/img/emu.jpg',
+                    'img_link' => '/img/agent1.png',
                 ];
             })
             ->toArray();
@@ -166,10 +166,10 @@ class DashboardController extends Controller
                 'priority' => $ticket->priority?->name ?? 'Unknown',
                 'requested_by' => $ticket->user?->name ?? 'Unknown',
                 'requestor_title' => 'Student',
-                'requestor_img_link' => '/img/emu.jpg',
+                'requestor_img_link' => '/img/user1.png',
                 'assigned_to' => auth()->user()->name,
                 'assignee_title' => 'Agent',
-                'assignee_img_link' => '/img/emu.jpg',
+                'assignee_img_link' => '/img/agent1.png',
             ];
         })->toArray();
 
@@ -209,10 +209,10 @@ class DashboardController extends Controller
                 'priority' => $ticket->priority?->name ?? 'Unknown',
                 'requested_by' => $user->name,
                 'requestor_title' => 'Student',
-                'requestor_img_link' => '/img/emu.jpg',
+                'requestor_img_link' => '/img/user1.png',
                 'assigned_to' => $ticket->currentAssignment?->agent?->name ?? 'Pending Assignment',
                 'assignee_title' => $ticket->currentAssignment?->agent ? 'Agent' : '',
-                'assignee_img_link' => '/img/emu.jpg',
+                'assignee_img_link' => '/img/agent1.png',
             ];
         })->toArray();
 

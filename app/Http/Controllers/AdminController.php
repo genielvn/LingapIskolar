@@ -27,7 +27,7 @@ class AdminController extends Controller
                     "name" => $manager->name,
                     "email" => $manager->email,
                     "title" => "Support Manager",
-                    "img_link" => "/img/emu.jpg",
+                    "img_link" => "/img/manager1.png",
                 ];
             })
             ->toArray();
@@ -110,7 +110,7 @@ class AdminController extends Controller
                     "name" => $agent->name,
                     "email" => $agent->email,
                     "title" => "Support Agent",
-                    "img_link" => "/img/emu.jpg",
+                    "img_link" => "/img/agent1.png",
                     "assigned_tickets" => $agent->ticket_assignments_count ?? 0,
                 ];
             })

@@ -24,8 +24,8 @@
 
                 <input
                     type="radio"
-                    name="assigned_to"
-                    value="{{ $agent["email"] }}"
+                    name="agent_id"
+                    value="{{ $agent["id"] }}"
                     class="h-4 w-4 border-zinc-300 text-blue-600 focus:ring-blue-500"
                 />
             </label>

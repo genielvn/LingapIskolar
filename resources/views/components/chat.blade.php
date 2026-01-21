@@ -9,11 +9,21 @@
 
     <div class="h-[500px] space-y-4 overflow-y-auto bg-zinc-50/30 p-6">
       @foreach($chat as $message)
+            @php
+                $senderImage = '/img/user1.png'; // Default for regular users
+                if ($message->sender->isAdmin()) {
+                    $senderImage = '/img/admin1.png';
+                } elseif ($message->sender->isManager()) {
+                    $senderImage = '/img/manager1.png';
+                } elseif ($message->sender->isAgent()) {
+                    $senderImage = '/img/agent1.png';
+                }
+            @endphp
             <x-message-bubble
                 :name="$message->sender->name"
                 :date="$message->created_at->format('M d, Y H:i')"
                 :content="$message->message"
-                :img-link="$message->sender?->profile_photo_url ?? '/img/emu.jpg'"
+                :img-link="$senderImage"
                 :me="$message->sender_id === auth()->id()"
             />
         @endforeach

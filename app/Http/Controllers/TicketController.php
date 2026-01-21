@@ -99,10 +99,10 @@ class TicketController extends Controller
             'priority' => $ticket->priority->name,
             'requested_by' => $ticket->user->name,
             'requestor_title' => 'Student',
-            'requestor_img_link' => '/img/emu.jpg',
+            'requestor_img_link' => '/img/user1.png',
             'assigned_to' => $ticket->currentAssignment?->agent?->name ?? 'Unassigned',
             'assignee_title' => $ticket->currentAssignment?->agent ? 'Agent' : '',
-            'assignee_img_link' => '/img/emu.jpg',
+            'assignee_img_link' => '/img/agent1.png',
         ];
 
         // Route to correct view based on role
@@ -119,7 +119,7 @@ class TicketController extends Controller
                         'name' => $agent->name,
                         'email' => $agent->email,
                         'title' => 'Agent',
-                        'img_link' => '/img/emu.jpg',
+                        'img_link' => '/img/agent1.png',
                     ];
                 })
                 ->toArray();
@@ -175,10 +175,10 @@ class TicketController extends Controller
         'priority' => $ticket->priority?->name ?? 'None',
         'requested_by' => $ticket->user?->name ?? 'Unknown',
         'requestor_title' => 'Student',
-        'requestor_img_link' => '/img/emu.jpg',
+        'requestor_img_link' => '/img/user1.png',
         'assigned_to' => $ticket->currentAssignment?->agent?->name ?? 'Unassigned',
         'assignee_title' => $ticket->currentAssignment?->agent ? 'Agent' : '',
-        'assignee_img_link' => $ticket->currentAssignment?->agent ? '/img/emu.jpg' : '',
+        'assignee_img_link' => $ticket->currentAssignment?->agent ? '/img/agent1.png' : '/img/unassigned.png',
     ];
 
     
@@ -206,7 +206,7 @@ class TicketController extends Controller
                 'name' => $agent->name,
                 'email' => $agent->email,
                 'title' => 'Agent',
-                'img_link' => '/img/emu.jpg', 
+                'img_link' => '/img/agent1.png',
             ])
             ->toArray();
 

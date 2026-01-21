@@ -53,6 +53,8 @@
                         @csrf
                         @method("PUT")
 
+                        <input type="hidden" name="priority_id" value="{{ $raw_ticket->priority_id ?? ($priorities->first()->id ?? '') }}" />
+
                         <x-agent-select-input :agents="$agents" />
 
                         <x-button :type="'submit'">Assign</x-button>
