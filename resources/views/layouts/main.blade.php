@@ -91,7 +91,9 @@
                             <x-alert
                                 :title="'Something went wrong!'"
                                 :type="'danger'"
-                            ></x-alert>
+                            >
+                                {{ $errors->first() }}
+                            </x-alert>
                         </div>
                     @endif
                 @endauth
