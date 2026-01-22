@@ -96,7 +96,9 @@ class DashboardController extends Controller
     private function managerDashboard()
     {
         // Managers see all tickets
-        $allTickets = Ticket::with(['user', 'status', 'priority', 'category', 'currentAssignment.agent'])->get();
+        $allTickets = Ticket::with(['user', 'status', 'priority', 'category', 'currentAssignment.agent'])
+        ->orderBy('created_at', 'desc')
+        ->get();
         
         $tickets = $allTickets->map(function ($ticket) {
             return [
@@ -154,6 +156,7 @@ class DashboardController extends Controller
         // Agents only see tickets assigned to them
         $allTickets = Ticket::forAgent($agent)
             ->with(['user', 'status', 'priority', 'category'])
+            ->orderBy('created_at', 'desc')
             ->get();
         
         $tickets = $allTickets->map(function ($ticket) {
@@ -197,6 +200,7 @@ class DashboardController extends Controller
         // Users only see their own tickets
         $allTickets = Ticket::forUser($user)
             ->with(['status', 'priority', 'category', 'currentAssignment.agent'])
+            ->orderBy('created_at', 'desc')
             ->get();
         
         $tickets = $allTickets->map(function ($ticket) use ($user) {

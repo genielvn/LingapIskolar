@@ -58,8 +58,8 @@
                     :id="'description'"
                     placeholder="Please explain the steps to reproduce the issue..."
                 />
-
-                <x-upload-input :id="'upload'" />
+                
+                {{--  <x-upload-input :id="'upload'" /> --}} 
 
                 <div class="mt-4 flex flex-col gap-3">
                     <x-button :type="'submit'" class="w-full py-4 text-lg">
