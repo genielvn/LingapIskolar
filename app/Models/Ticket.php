@@ -178,4 +178,22 @@ class Ticket extends Model
     {
         return in_array($this->status->name, ["Resolved", "Closed"]);
     }
+
+
+    public function scopeFilter($query)
+    {
+        $status = request('status');
+        $category = request('category');
+        $priority = request('priority');
+        $search = request('search');
+
+        return $query
+            ->when($status && $status !== 'All', fn($q) => $q->whereHas('status', fn($q2) => $q2->where('name', $status)))
+            ->when($category && $category !== 'All', fn($q) => $q->whereHas('category', fn($q2) => $q2->where('name', $category)))
+            ->when($priority && $priority !== 'All', fn($q) => $q->whereHas('priority', fn($q2) => $q2->where('name', $priority)))
+            ->when($search, fn($q) => $q->where('subject', 'like', "%{$search}%")
+                                    ->orWhere('description', 'like', "%{$search}%"));
+    }
+
+    
 }
