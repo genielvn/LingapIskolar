@@ -47,5 +47,17 @@
             :tickets="$tickets"
             :agentButtonType="'delete'"
         ></x-ticket-table>
+
+         @push('scripts')
+        <script>
+            function confirmDelete() {
+                return confirm(
+                    "Are you sure you want to delete this resolved ticket?\n\nThis action cannot be undone."
+                );
+            }
+        </script>
+        @endpush
+
+
     </div>
 @endsection

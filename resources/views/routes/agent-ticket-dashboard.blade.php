@@ -47,8 +47,8 @@
 
         <div class="grid grid-cols-1 gap-6 md:grid-cols-4">
             <x-counter
-                :name="'Open'"
-                :value="$stats['open']"
+                :name="'Assigned'"
+                :value="$stats['assigned']"
                 :color="'border-l-green-600'"
             />
             <x-counter

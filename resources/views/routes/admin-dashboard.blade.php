@@ -48,7 +48,7 @@
                         :color="'border-l-green-600'"
                     />
                     <x-counter
-                        :name="'Closed'"
+                        :name="'Resolved'"
                         :value="$stats['closed']"
                         :color="'border-l-gray-200'"
                         :icon="'bi-door-closed'"
@@ -75,7 +75,7 @@
                         :icon="'bi-person-up'"
                     />
                     <x-counter
-                        :name="'Inactive'"
+                        :name="'Users Total'"
                         :value="$stats['inactive']"
                         :color="'border-l-gray-200'"
                         :icon="'bi-person-x'"

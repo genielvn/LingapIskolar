@@ -87,7 +87,9 @@ class DashboardController extends Controller
 
         $stats = [
             "open" => $allTickets->where("status.name", "Open")->count(),
-            "unassigned" => Ticket::doesntHave("currentAssignment")->count(),
+            "active" => $allTickets
+                ->whereIn("status.name", ["In Progress", "Pending User Response"]) 
+                ->count(),
             "escalated" => $allTickets
                 ->where("status.name", "Escalated")
                 ->count(),
@@ -114,7 +116,7 @@ class DashboardController extends Controller
         $tickets = $this->mapTickets($allTickets, $agent->name);
 
         $stats = [
-            "open" => $allTickets->where("status.name", "Open")->count(),
+            "assigned" => $allTickets->where("status.name", "Assigned")->count(),
             "pending" => $allTickets
                 ->where("status.name", "Pending User Response")
                 ->count(),
