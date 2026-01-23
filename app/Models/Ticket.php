@@ -4,9 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Ticket extends Model
-{
+class Ticket extends Model{
+
+    
+    use SoftDeletes;
+
+    protected $dates = ['deleted_at'];
+
+
     protected $fillable = [
         "user_id",
         "category_id",

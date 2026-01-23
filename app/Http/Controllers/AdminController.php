@@ -58,7 +58,7 @@ class AdminController extends Controller
         $user->syncRoles(["support-manager"]);
 
         return redirect()
-            ->route("agent-list")
+            ->route("manager-list")
             ->with("success", "Successfully promoted the user to agent.");
     }
 
@@ -81,15 +81,9 @@ class AdminController extends Controller
         // Demote to regular user
         $user->syncRoles(["user"]);
 
-        return response()->json([
-            "status" => 200,
-            "message" => "Manager role revoked successfully.",
-            "data" => [
-                "user_id" => $user->id,
-                "user_name" => $user->name,
-                "new_role" => "user",
-            ],
-        ]);
+        return redirect()
+            ->back()
+            ->with("success", "Agent role revoked successfully.");
     }
 
     /**
@@ -166,32 +160,17 @@ class AdminController extends Controller
         // Check if agent has active ticket assignments
         $activeAssignments = $user->ticketAssignments()->count();
 
-        if ($activeAssignments > 0) {
-            return response()->json(
-                [
-                    "status" => 400,
-                    "message" =>
-                        "Cannot revoke agent role. Agent has active ticket assignments.",
-                    "data" => [
-                        "user_id" => $user->id,
-                        "active_assignments" => $activeAssignments,
-                    ],
-                ],
-                400,
-            );
-        }
+       if ($activeAssignments > 0) {
+        return redirect()
+            ->back()
+            ->with("error", "Cannot revoke agent role. Agent still has active ticket assignments.");
+    }
 
         // Demote to regular user
         $user->syncRoles(["user"]);
 
-        return response()->json([
-            "status" => 200,
-            "message" => "Agent role revoked successfully.",
-            "data" => [
-                "user_id" => $user->id,
-                "user_name" => $user->name,
-                "new_role" => "user",
-            ],
-        ]);
+        return redirect()
+            ->back()
+            ->with("success", "Agent role revoked successfully.");
     }
 }

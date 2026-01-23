@@ -110,15 +110,22 @@
 
                         @if (Auth()->user()->isManager())
                             @if ($agentButtonType === "delete")
-                                <form action="/ticket/delete" method="POST">
-                                    @method("DELETE")
+                                 <form
+                                    action="{{ route('tickets.delete') }}"
+                                    method="POST"
+                                    onsubmit="return confirmDelete();"
+                                >
                                     @csrf
+                                    {{-- keep DELETE for route --}}
+                                    @method("DELETE")
+
                                     <input
                                         type="hidden"
-                                        value="{{ $ticket["id"] }}"
-                                        name="id"
+                                        value="{{ $ticket['id'] }}"
+                                        name="ticket_id"
                                     />
-                                    <x-button :type="'submit'">
+
+                                    <x-button :type="'submit'" class="bg-red-600 hover:bg-red-700 text-white">
                                         Delete
                                     </x-button>
                                 </form>

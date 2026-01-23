@@ -11,6 +11,7 @@ use App\Models\TicketMessage;
 use App\Models\TicketAssignment;
 use App\Models\User;
 use Illuminate\Http\Request;
+use PHPUnit\Framework\ActualValueIsNotAnObjectException;
 
 class TicketController extends Controller
 {
@@ -67,17 +68,51 @@ class TicketController extends Controller
 
     public function delete(Request $request)
     {
-        $data = $request->all();
+        /*ata = $request->all();
         return response()->json([
             "status" => 501,
             "comment" =>
                 "TODO: Soft delete the ticket. Make sure only managers can do this.",
             "message" => "Not Implemented: Data still received.",
             "data" => $data,
+        ]);*/
+
+        //Managers or admins can delete tickets
+        $user = auth()->user();
+
+        if(! $user || ! ($user->isManager() || $user->isAdmin())){
+            return redirect()
+                ->back()
+                ->with('error', 'Unauthorized. Only managers can delete tickets.');
+        }
+
+        //Validate input
+        $validated = $request->validate([
+            'ticket_id' => 'required|exists:tickets,id',
         ]);
+        
+        $ticket = Ticket::with('status')->findOrFail($validated['ticket_id']);
+
+        //Only tickets that are resolved or closed are to be Deleted
+        $allowedStatuses = ['Resolved', 'Closed'];
+
+        if(! in_array($ticket->status?->name, $allowedStatuses)){
+            return redirect()
+                ->back()
+                ->with('error', 'Only resolved or closed tickets can be deleted.');
+        }
+
+        $ticket->delete();
+
+        return redirect()
+            ->back()
+            ->with('error', 'Ticket deleted succesfully');
+
+
     }
 
     /**
+     * TESTING SAMPLE DATA
      * Show ticket details
      */
     /*public function show(string $id)

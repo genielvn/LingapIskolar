@@ -49,8 +49,8 @@
                 :color="'border-l-green-600'"
             />
             <x-counter
-                :name="'Unassigned'"
-                :value="$stats['unassigned']"
+                :name="'Active'"
+                :value="$stats['active']"
                 :color="'border-l-amber-500'"
             />
             <x-counter

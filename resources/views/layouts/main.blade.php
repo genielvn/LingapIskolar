@@ -8,6 +8,11 @@
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
         />
+
+
+        <link rel="icon" href="{{ asset('front-logo.png') }}?v=999" type="image/png">
+
+
         <script
             defer
             src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
@@ -103,5 +108,6 @@
                 @show
             </div>
         </main>
+        @stack('scripts')
     </body>
 </html>

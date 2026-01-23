@@ -2,6 +2,42 @@
 @extends("layouts.admin-sidebar")
 
 @section("main")
+
+    @if (session('success'))
+        <div 
+            x-data="{ show: true }" 
+            x-init="setTimeout(() => show = false, 3000)" 
+            x-show="show"
+            x-transition.opacity
+            class="px-8 py-4"
+        >
+            <x-alert 
+                title="Success! The operation is successful!" 
+                :icon="'bi-check-circle-fill'" 
+                type="success" 
+                :message="session('success')" 
+            />
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div 
+            x-data="{ show: true }" 
+            x-init="setTimeout(() => show = false, 3000)" 
+            x-show="show"
+            x-transition.opacity
+            class="px-8 py-4"
+        >
+            <x-alert 
+                title="Error! The operation encounters an error." 
+                :icon="'bi-x-circle'" 
+                type="danger" 
+                :message="session('error')" 
+            />
+        </div>
+    @endif
+
+
     <div class="flex w-full flex-col gap-6 p-6 px-10">
         <x-page-header>
             <x-slot:header>

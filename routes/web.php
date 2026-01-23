@@ -7,7 +7,7 @@ use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
-// sample data
+
 
 Route::get("/", function () {
     if (Auth()->guest()) {
@@ -38,8 +38,10 @@ Route::post("/logout", function () {
     return redirect("/");
 });
 
-// TODO: remove $tickets when implementing the ticket controller now
+
 Route::middleware("auth")->group(function () {
+
+    // THIS IS FOR TESTING SAMPLE DATA
     /*Route::get("/dashboard", function () use ($tickets, $sample_members) {
         if (auth()->user()->isAdmin()) {
             return view("routes.admin-dashboard", [
@@ -291,6 +293,11 @@ Route::middleware("auth")->group(function () {
         "updateStatus",
     ]);
     Route::put("/ticket/{id}/assign", [TicketController::class, "assign"]);
+
+    //Manager - delete tickets
+    Route::delete('/ticket/delete', [TicketController::class, 'delete'])
+    ->name('tickets.delete');
+
 
     // Admin routes - Manager management
     Route::get("/manager", [AdminController::class, "listManagers"])->name(
