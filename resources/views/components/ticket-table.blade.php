@@ -45,7 +45,9 @@
         </thead>
         <tbody class="divide-y divide-zinc-100">
             @forelse ($tickets as $ticket)
-                <tr class="group transition-all hover:bg-zinc-50/80">
+                <tr
+                    {{ $attributes->merge(["class" => $getRowStyle($ticket["assigned_to"])]) }}
+                >
                     @if (in_array("id", $columns))
                         <td class="px-6 py-5">
                             <span
@@ -107,10 +109,25 @@
                         </div>
 
                         @if (Auth()->user()->isManager())
-                            <x-assign-agent-modal
-                                :ticket="$ticket"
-                                :agents="$agents"
-                            />
+                            @if ($agentButtonType === "delete")
+                                <form action="/ticket/delete" method="POST">
+                                    @method("DELETE")
+                                    @csrf
+                                    <input
+                                        type="hidden"
+                                        value="{{ $ticket["id"] }}"
+                                        name="id"
+                                    />
+                                    <x-button :type="'submit'">
+                                        Delete
+                                    </x-button>
+                                </form>
+                            @else
+                                <x-assign-agent-modal
+                                    :ticket="$ticket"
+                                    :agents="$agents"
+                                />
+                            @endif
                         @endif
                     </td>
                 </tr>

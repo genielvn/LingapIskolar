@@ -20,11 +20,11 @@ class TicketController extends Controller
     public function create()
     {
         $categories = TicketCategory::all();
-       // $priorities = TicketPriority::all();
+        // $priorities = TicketPriority::all();
 
-        return view('routes.create-ticket', [
-            'categories' => $categories,
-           // 'priorities' => $priorities,
+        return view("routes.create-ticket", [
+            "categories" => $categories,
+            // 'priorities' => $priorities,
         ]);
     }
 
@@ -33,34 +33,48 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('create', Ticket::class);
+        $this->authorize("create", Ticket::class);
 
         $validated = $request->validate([
-            'subject' => 'required|string|max:255',
-            'description' => 'required|string',
-            'category_id' => 'required|exists:ticket_categories,id',
+            "subject" => "required|string|max:255",
+            "description" => "required|string",
+            "category_id" => "required|exists:ticket_categories,id",
             //'priority_id' => 'nullable|exists:ticket_priorities,id',
         ]);
 
         // Get "Open" status
-        $openStatus = TicketStatus::where('name', 'Open')->first();
+        $openStatus = TicketStatus::where("name", "Open")->first();
 
-         // Get default "Medium" priority
-        $defaultPriority = TicketPriority::where('name', 'Medium')->first();
+        // Get default "Medium" priority
+        $defaultPriority = TicketPriority::where("name", "Medium")->first();
 
         $ticket = Ticket::create([
-            'user_id' => auth()->id(),
-            'subject' => $validated['subject'],
-            'description' => $validated['description'],
-            'category_id' => $validated['category_id'],
-            //'priority_id' => $validated['priority_id'] ?? null, //default to null   
-            'priority_id' => $defaultPriority->id, 
-            'status_id' => $openStatus->id,
+            "user_id" => auth()->id(),
+            "subject" => $validated["subject"],
+            "description" => $validated["description"],
+            "category_id" => $validated["category_id"],
+            //'priority_id' => $validated['priority_id'] ?? null, //default to null
+            "priority_id" => $defaultPriority->id,
+            "status_id" => $openStatus->id,
         ]);
 
         return redirect()
-            ->route('ticket-details', ['id' => str_pad($ticket->id, 8, '0', STR_PAD_LEFT)])
-            ->with('success', 'Ticket created successfully!');
+            ->route("ticket-details", [
+                "id" => str_pad($ticket->id, 8, "0", STR_PAD_LEFT),
+            ])
+            ->with("success", "Ticket created successfully!");
+    }
+
+    public function delete(Request $request)
+    {
+        $data = $request->all();
+        return response()->json([
+            "status" => 501,
+            "comment" =>
+                "TODO: Soft delete the ticket. Make sure only managers can do this.",
+            "message" => "Not Implemented: Data still received.",
+            "data" => $data,
+        ]);
     }
 
     /**
@@ -146,98 +160,102 @@ class TicketController extends Controller
     }*/
 
     public function show(string $id)
-{
-    // Convert ticket ID from padded string to integer
-    $ticketId = (int) ltrim($id, '0');
+    {
+        // Convert ticket ID from padded string to integer
+        $ticketId = (int) ltrim($id, "0");
 
-    // Load ticket with all necessary relationships
-    $ticket = Ticket::with([
-        'user',
-        'status',
-        'priority',
-        'category',
-        'currentAssignment.agent', // safely get assigned agent
-        'messages.sender',
-    ])->findOrFail($ticketId);
+        // Load ticket with all necessary relationships
+        $ticket = Ticket::with([
+            "user",
+            "status",
+            "priority",
+            "category",
+            "currentAssignment.agent", // safely get assigned agent
+            "messages.sender",
+        ])->findOrFail($ticketId);
 
-    // Authorize the current user to view the ticket
-    $this->authorize('view', $ticket);
+        // Authorize the current user to view the ticket
+        $this->authorize("view", $ticket);
 
-    $user = auth()->user();
+        $user = auth()->user();
 
-    // Prepare ticket data for Blade
-    $ticketData = [
-        'id' => str_pad($ticket->id, 8, '0', STR_PAD_LEFT),
-        'status' => $ticket->status?->name ?? 'Unknown',
-        'subject' => $ticket->subject,
-        'description' => $ticket->description,
-        'category' => $ticket->category?->name ?? 'Uncategorized',
-        'priority' => $ticket->priority?->name ?? 'None',
-        'requested_by' => $ticket->user?->name ?? 'Unknown',
-        'requestor_title' => 'Student',
-        'requestor_img_link' => '/img/user1.png',
-        'assigned_to' => $ticket->currentAssignment?->agent?->name ?? 'Unassigned',
-        'assignee_title' => $ticket->currentAssignment?->agent ? 'Agent' : '',
-        'assignee_img_link' => $ticket->currentAssignment?->agent ? '/img/agent1.png' : '/img/unassigned.png',
-    ];
+        // Prepare ticket data for Blade
+        $ticketData = [
+            "id" => str_pad($ticket->id, 8, "0", STR_PAD_LEFT),
+            "status" => $ticket->status?->name ?? "Unknown",
+            "subject" => $ticket->subject,
+            "description" => $ticket->description,
+            "category" => $ticket->category?->name ?? "Uncategorized",
+            "priority" => $ticket->priority?->name ?? "None",
+            "requested_by" => $ticket->user?->name ?? "Unknown",
+            "requestor_title" => "Student",
+            "requestor_img_link" => "/img/user1.png",
+            "assigned_to" =>
+                $ticket->currentAssignment?->agent?->name ?? "Unassigned",
+            "assignee_title" => $ticket->currentAssignment?->agent
+                ? "Agent"
+                : "",
+            "assignee_img_link" => $ticket->currentAssignment?->agent
+                ? "/img/agent1.png"
+                : "/img/unassigned.png",
+        ];
 
-    
-    $chat = $ticket->messages()
-    ->with('sender')
-    ->orderBy('created_at', 'asc')
-    ->get();
+        $chat = $ticket
+            ->messages()
+            ->with("sender")
+            ->orderBy("created_at", "asc")
+            ->get();
 
-    
-    $statuses = TicketStatus::all();
-    $priorities = TicketPriority::all();
+        $statuses = TicketStatus::all();
+        $priorities = TicketPriority::all();
 
+        // Route user to the correct view based on role
+        if ($user->isAdmin()) {
+            abort(404); // Admins don't view individual tickets
+        }
 
-    // Route user to the correct view based on role
-    if ($user->isAdmin()) {
-        abort(404); // Admins don't view individual tickets
-    }
+        if ($user->isManager()) {
+            // Get list of agents for assignment dropdown
+            $agents = User::role("agent")
+                ->get()
+                ->map(
+                    fn($agent) => [
+                        "id" => (string) $agent->id,
+                        "name" => $agent->name,
+                        "email" => $agent->email,
+                        "title" => "Agent",
+                        "img_link" => "/img/agent1.png",
+                    ],
+                )
+                ->toArray();
 
-    if ($user->isManager()) {
-        // Get list of agents for assignment dropdown
-        $agents = User::role('agent')
-            ->get()
-            ->map(fn($agent) => [
-                'id' => (string) $agent->id,
-                'name' => $agent->name,
-                'email' => $agent->email,
-                'title' => 'Agent',
-                'img_link' => '/img/agent1.png',
-            ])
-            ->toArray();
+            return view("routes.manager-ticket-details", [
+                "ticket" => $ticketData,
+                "agents" => $agents,
+                "raw_ticket" => $ticket, // full model for forms
+                "chat" => $chat,
+                "statuses" => $statuses,
+                "priorities" => $priorities,
+            ]);
+        }
 
-        return view('routes.manager-ticket-details', [
-            'ticket' => $ticketData,
-            'agents' => $agents,
-            'raw_ticket' => $ticket, // full model for forms
-            'chat'       => $chat,
-            'statuses'       => $statuses,
-            'priorities'       => $priorities,
+        if ($user->isAgent()) {
+            return view("routes.agent-ticket-details", [
+                "ticket" => $ticketData,
+                "raw_ticket" => $ticket,
+                "chat" => $chat,
+                "statuses" => $statuses,
+                "priorities" => $priorities,
+            ]);
+        }
+
+        // Regular user view
+        return view("routes.user-ticket-details", [
+            "ticket" => $ticketData,
+            "raw_ticket" => $ticket,
+            "chat" => $chat,
         ]);
     }
-
-    if ($user->isAgent()) {
-        return view('routes.agent-ticket-details', [
-            'ticket' => $ticketData,
-            'raw_ticket' => $ticket,
-             'chat'       => $chat,
-             'statuses'       => $statuses,
-            'priorities'       => $priorities,
-        ]);
-    }
-
-    // Regular user view
-    return view('routes.user-ticket-details', [
-        'ticket' => $ticketData,
-        'raw_ticket' => $ticket,
-         'chat'       => $chat,
-    ]);
-}
-    
 
     /**
      * Add reply/message to ticket
@@ -245,24 +263,24 @@ class TicketController extends Controller
     public function reply(Request $request, string $id)
     {
         // Remove leading zeros and convert to integer
-        $ticketId = (int) ltrim($id, '0');
-        
+        $ticketId = (int) ltrim($id, "0");
+
         $ticket = Ticket::findOrFail($ticketId);
 
-        $this->authorize('addMessage', $ticket);
+        $this->authorize("addMessage", $ticket);
 
         $validated = $request->validate([
-            'message' => 'required|string',
+            "message" => "required|string",
         ]);
 
         TicketMessage::create([
-            'ticket_id' => $ticket->id,
-            'sender_id' => auth()->id(),
-            'message' => $validated['message'],
-            'is_internal' => false, // Public message
+            "ticket_id" => $ticket->id,
+            "sender_id" => auth()->id(),
+            "message" => $validated["message"],
+            "is_internal" => false, // Public message
         ]);
 
-        return back()->with('success', 'Reply sent successfully!');
+        return back()->with("success", "Reply sent successfully!");
     }
 
     /**
@@ -276,30 +294,30 @@ class TicketController extends Controller
         }
 
         // Remove leading zeros and convert to integer
-        $ticketId = (int) ltrim($id, '0');
-        
+        $ticketId = (int) ltrim($id, "0");
+
         $ticket = Ticket::findOrFail($ticketId);
 
-        $this->authorize('updateStatus', $ticket);
+        $this->authorize("updateStatus", $ticket);
 
         $validated = $request->validate([
-            'status_id' => 'nullable|exists:ticket_statuses,id',
-            'priority_id' => 'nullable|exists:ticket_priorities,id',
+            "status_id" => "nullable|exists:ticket_statuses,id",
+            "priority_id" => "nullable|exists:ticket_priorities,id",
         ]);
 
         $updateData = [];
-        
-       if ($request->filled('status_id')) {
-           $updateData['status_id'] = $validated['status_id'];
+
+        if ($request->filled("status_id")) {
+            $updateData["status_id"] = $validated["status_id"];
         }
 
-        if ($request->filled('priority_id')) {
-            $updateData['priority_id'] = $validated['priority_id'];
+        if ($request->filled("priority_id")) {
+            $updateData["priority_id"] = $validated["priority_id"];
         }
 
         $ticket->update($updateData);
 
-        return back()->with('success', 'Status updated successfully!');
+        return back()->with("success", "Status updated successfully!");
     }
 
     /**
@@ -313,22 +331,23 @@ class TicketController extends Controller
         }
 
         // Remove leading zeros and convert to integer
-        $ticketId = (int) ltrim($id, '0');
-        
+        $ticketId = (int) ltrim($id, "0");
+
         $ticket = Ticket::findOrFail($ticketId);
 
-        $this->authorize('assign', $ticket);
+        $this->authorize("assign", $ticket);
 
         $validated = $request->validate([
-            'agent_id' => 'required|exists:users,id',
-            'priority_id' => 'required|exists:ticket_priorities,id',
-
+            "agent_id" => "required|exists:users,id",
+            "priority_id" => "required|exists:ticket_priorities,id",
         ]);
 
         // Verify the user is actually an agent
-        $agent = User::findOrFail($validated['agent_id']);
+        $agent = User::findOrFail($validated["agent_id"]);
         if (!$agent->isAgent()) {
-            return back()->withErrors(['agent_id' => 'Selected user is not an agent.']);
+            return back()->withErrors([
+                "agent_id" => "Selected user is not an agent.",
+            ]);
         }
 
         // Delete old assignment if exists
@@ -336,20 +355,20 @@ class TicketController extends Controller
 
         // Create new assignment
         TicketAssignment::create([
-            'ticket_id' => $ticket->id,
-            'agent_id' => $validated['agent_id'],
+            "ticket_id" => $ticket->id,
+            "agent_id" => $validated["agent_id"],
         ]);
 
         $ticket->update([
-            'priority_id' => $validated['priority_id'],
+            "priority_id" => $validated["priority_id"],
         ]);
 
         // Update status to "Assigned"
-        $assignedStatus = TicketStatus::where('name', 'Assigned')->first();
+        $assignedStatus = TicketStatus::where("name", "Assigned")->first();
         if ($assignedStatus) {
-            $ticket->update(['status_id' => $assignedStatus->id]);
+            $ticket->update(["status_id" => $assignedStatus->id]);
         }
 
-        return back()->with('success', 'Ticket assigned successfully!');
+        return back()->with("success", "Ticket assigned successfully!");
     }
 }

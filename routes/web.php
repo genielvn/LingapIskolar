@@ -8,128 +8,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
 // sample data
-$tickets = [
-    [
-        "id" => "0000-0001",
-        "status" => "Pending User Response",
-        "subject" => "Paano ako gagraduate ng may INC?",
-        "description" =>
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        "category" => "Scholarship",
-        "priority" => "Urgent",
-        "requested_by" => "Makoto Yuki",
-        "requestor_title" => "Student",
-        "requestor_img_link" => "/img/user1.png",
-        "assigned_to" => "Reimu Hakurei",
-        "assignee_title" => "Shrine Maiden",
-        "assignee_img_link" => "/img/agent1.png",
-    ],
-    [
-        "id" => "0000-0002",
-        "status" => "Open",
-        "subject" => "Request for scholarship?",
-        "description" =>
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        "category" => "Scholarship",
-        "priority" => "High",
-        "requested_by" => "Yukari Takeba",
-        "requestor_title" => "Student",
-        "requestor_img_link" => "/img/user1.png",
-        "assigned_to" => "Marisa Kirisame",
-        "assignee_title" => "Human Magician",
-        "assignee_img_link" => "/img/agent1.png",
-    ],
-    [
-        "id" => "0000-0003",
-        "status" => "Closed",
-        "subject" => "Idiot found on the bathroom",
-        "description" =>
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        "category" => "Scholarship",
-        "priority" => "Medium",
-        "requested_by" => "Junpei Iori",
-        "requestor_title" => "Student",
-        "requestor_img_link" => "/img/user1.png",
-        "assigned_to" => "Cirno",
-        "assignee_title" => "Stupid Fairy",
-        "assignee_img_link" => "/img/agent1.png",
-    ],
-];
-
-$sample_members = [
-    [
-        "id" => "1",
-        "name" => "Reimu Hakurei",
-        "email" => "reimu@touhou.com",
-        "title" => "Shrine Maiden",
-        "img_link" => "/img/agent1.png",
-    ],
-    [
-        "id" => "2",
-        "name" => "Marisa Kirisame",
-        "email" => "marisa@touhou.com",
-        "title" => "Ordinary Magician",
-        "img_link" => "/img/agent1.png",
-    ],
-    [
-        "id" => "3",
-        "name" => "Sakuya Izayoi",
-        "email" => "sakuya@touhou.com",
-        "title" => "Chief Maid",
-        "img_link" => "/img/agent1.png",
-    ],
-    [
-        "id" => "4",
-        "name" => "Youmu Konpaku",
-        "email" => "youmu@touhou.com",
-        "title" => "Half-Ghost Gardener",
-        "img_link" => "/img/agent1.png",
-    ],
-    [
-        "id" => "5",
-        "name" => "Sanae Kochiya",
-        "email" => "sanae@touhou.com",
-        "title" => "Deified Human",
-        "img_link" => "/img/agent1.png",
-    ],
-    [
-        "id" => "6",
-        "name" => "Remilia Scarlet",
-        "email" => "remilia@touhou.com",
-        "title" => "Vampire Lord",
-        "img_link" => "/img/agent1.png",
-    ],
-    [
-        "id" => "7",
-        "name" => "Fujiwara no Mokou",
-        "email" => "mokou@touhou.com",
-        "title" => "Figure of the Person of Hourai",
-        "img_link" => "/img/agent1.png",
-    ],
-];
-
-$chat = [
-    [
-        "id" => "1",
-        "name" => "Reimu Hakurei",
-        "email" => "reimu@touhou.com",
-        "title" => "Shrine Maiden",
-        "img_link" => "/img/agent1.png",
-        "message" => "Ping?",
-        "date" => "24 Aug 2026",
-        "me" => false,
-    ],
-    [
-        "id" => "2",
-        "name" => "Emu Otori",
-        "email" => "emu@pjsk.com",
-        "title" => "Student",
-        "img_link" => "/img/user1.png",
-        "message" => "POOOOONNNNNNNGGGG!!!!",
-        "date" => "24 Aug 2026",
-        "me" => true,
-    ],
-];
 
 Route::get("/", function () {
     if (Auth()->guest()) {
@@ -161,11 +39,7 @@ Route::post("/logout", function () {
 });
 
 // TODO: remove $tickets when implementing the ticket controller now
-Route::middleware("auth")->group(function () use (
-    $sample_members,
-    $tickets,
-    $chat,
-) {
+Route::middleware("auth")->group(function () {
     /*Route::get("/dashboard", function () use ($tickets, $sample_members) {
         if (auth()->user()->isAdmin()) {
             return view("routes.admin-dashboard", [
@@ -190,7 +64,7 @@ Route::middleware("auth")->group(function () use (
         return view("routes.user-ticket-dashboard", ["tickets" => $tickets]);
     })->name("dashboard"); */
 
-  /*  Route::get("/dashboard", [DashboardController::class, "index"])->name("dashboard");
+    /*  Route::get("/dashboard", [DashboardController::class, "index"])->name("dashboard");
 
 
     Route::get("/ticket/create", function () {
@@ -393,25 +267,42 @@ Route::middleware("auth")->group(function () use (
         );
     });*/
 
-
-     // Dashboard
-    Route::get("/dashboard", [DashboardController::class, "index"])->name("dashboard");
+    // Dashboard
+    Route::get("/dashboard", [DashboardController::class, "index"])->name(
+        "dashboard",
+    );
+    Route::get("/dashboard/resolved", [
+        DashboardController::class,
+        "resolvedTickets",
+    ])->name("resolved-tickets");
 
     // Ticket routes
-    Route::get("/ticket/create", [TicketController::class, "create"])->name("ticket-create");
+    Route::get("/ticket/create", [TicketController::class, "create"])->name(
+        "ticket-create",
+    );
     Route::post("/ticket/create", [TicketController::class, "store"]);
-    Route::get("/ticket/{id}", [TicketController::class, "show"])->name("ticket-details");
+    Route::delete("/ticket/delete", [TicketController::class, "delete"]);
+    Route::get("/ticket/{id}", [TicketController::class, "show"])->name(
+        "ticket-details",
+    );
     Route::post("/ticket/{id}/reply", [TicketController::class, "reply"]);
-    Route::put("/ticket/{id}/status", [TicketController::class, "updateStatus"]);
+    Route::put("/ticket/{id}/status", [
+        TicketController::class,
+        "updateStatus",
+    ]);
     Route::put("/ticket/{id}/assign", [TicketController::class, "assign"]);
 
     // Admin routes - Manager management
-    Route::get("/manager", [AdminController::class, "listManagers"])->name("manager-list");
+    Route::get("/manager", [AdminController::class, "listManagers"])->name(
+        "manager-list",
+    );
     Route::put("/manager/add", [AdminController::class, "addManager"]);
     Route::put("/manager/revoke", [AdminController::class, "revokeManager"]);
 
     // Admin routes - Agent management
-    Route::get("/agent", [AdminController::class, "listAgents"])->name("agent-list");
+    Route::get("/agent", [AdminController::class, "listAgents"])->name(
+        "agent-list",
+    );
     Route::put("/agent/add", [AdminController::class, "addAgent"]);
     Route::put("/agent/revoke", [AdminController::class, "revokeAgent"]);
 });
