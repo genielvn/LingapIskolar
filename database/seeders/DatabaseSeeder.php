@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             TicketStatusSeeder::class,
             TicketPrioritySeeder::class,
             UserSeeder::class,
+            TicketSeeder::class,
         ]);
 
         // these are test users with roles
